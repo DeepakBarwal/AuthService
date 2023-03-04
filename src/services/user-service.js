@@ -50,6 +50,24 @@ class UserService {
         }
     }
 
+    async isAuthenticated(token) {
+        try {
+            const response = this.verifyToken(token);
+            if (!response) {
+                throw { error: 'Invalid token' };
+            }
+            // In case user is deleted before token expires
+            const user = await this.userRepository.getById(response.id);
+            if (!user) {
+                throw { error: 'No user with the corresponding token exists' };
+            }
+            return user.id;
+        } catch (error) {
+            console.log('Something went wrong in the user service layer - auth process');
+            throw error;
+        }
+    }
+
     verifyToken(token) {
         try {
             const response = jwt.verify(token, JWT_KEY);

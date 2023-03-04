@@ -8,11 +8,16 @@ router.post(
     '/signup',
     AuthRequestValidators.validateUserAuth,
     userController.create
-    );
+);
 router.post(
     '/signIn',
     AuthRequestValidators.validateUserAuth,
     userController.signIn
-    );
+);
+
+router.get(
+    '/isAuthenticated',
+    userController.isAuthenticated
+);
 
 module.exports = router;
