@@ -27,10 +27,6 @@ class UserService {
         try {
             // Step 1 -> fetch the user using their email
             const user = await this.userRepository.getByEmail(email);
-            if (!user) {
-                console.log('User not found');
-                throw { error: 'Invalid credentials' };
-            }
 
             // Step 2 -> Compare incoming plain password with stored encrypted password
             const passwordsMatch = this.checkPassword(plainPassword, user.password);
@@ -45,6 +41,9 @@ class UserService {
             return newJWT;
         } catch (error) {
             console.log('Something went wrong in the user service layer - sign in');
+            if (error.name === 'AttributeNotFound') {
+                throw error;
+            }
             throw error;
         }
     }

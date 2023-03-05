@@ -15,7 +15,7 @@ const create = async (req, res) => {
             err: {}
         });
     } catch (error) {
-        // console.log(error);
+        console.log(error);
         return res.status(error.statusCode).json({
             data: {},
             success: false,
@@ -36,11 +36,11 @@ const signIn = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({
+        return res.status(error.statusCode).json({
             data: {},
             success: false,
-            message: 'Something went wrong at user controller layer',
-            err: error
+            message: error.message,
+            err: error.explanation
         });
     }
 }
